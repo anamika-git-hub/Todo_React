@@ -33,23 +33,38 @@ h1 {
 }
 
 input::placeholder {
-    color: #aaa; /* Slightly lighter to differentiate from text */
+    color: #aaa; 
 }
 
 .input-section input {
     border-radius: 5px;
-    border: 1px solid #4a4a6a; /* Subtle border color that blends with the theme */
-    background-color: #1f1f3a; /* Darker shade for a distinct but cohesive look */
-    color: #d1d1e9; /* Text color matching the overall theme */
-    width: 100%;
+    border: 1px solid #4a4a6a; 
+    background-color: #1f1f3a; 
+    color: #d1d1e9; 
+    width: 75%;
     padding: 12px;
     box-sizing: border-box;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    display: inline-block;
 }
 
+.input-section button {
+    padding: 12px 20px;
+    margin-left: 10px;
+    border-radius: 5px;
+    border: none;
+    background-color: #4a4a6a;
+    color: #d1d1e9;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.input-section button:hover {
+    background-color: #3e3e5a;
+}
 .input-section input:focus {
-    background-color: #25254a; /* Slightly lighter on focus for emphasis */
-    box-shadow: 0 0 5px #3e3e5a; /* Subtle glow effect to highlight focus */
+    background-color: #25254a;
+    box-shadow: 0 0 5px #3e3e5a; 
 }
 
 ul {
@@ -71,6 +86,15 @@ ul li {
     transition: background-color 0.3s ease;
 }
 
+ul li.completed {
+    text-decoration: line-through;
+    opacity: 0.6;
+}
+
+ul li input[type="checkbox"] {
+    margin-right: 15px;
+}
+
 ul li:hover {
     background-color: #3e3e5a;
 }
@@ -78,9 +102,14 @@ ul li:hover {
 ul li i {
     color: #d1d1e9; 
     cursor: pointer;
+    margin-left: 15px;
     transition: color 0.3s ease;
 }
 
 ul li i:hover {
     color: #bfc0c0; 
+}
+ul li div {
+    display: flex;
+    align-items: center;
 }
