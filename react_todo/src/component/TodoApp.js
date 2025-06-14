@@ -14,8 +14,10 @@ export default class TodoApp extends Component {
   state = {
     input: '',
     items: [],
+    isChecked: [],
     editingIndex: null,
-    isChecked: []
+    showConfirm: false,
+    deleteIndex: null
   };
 
   async componentDidMount() {
@@ -66,16 +68,30 @@ export default class TodoApp extends Component {
     }
   };
 
-  deleteItem = async (index) => {
-    const { items, isChecked } = this.state;
-    const idToDelete = items[index].id;
+  askDelete = (index) => {
+    this.setState({
+      showConfirm: true,
+      deleteIndex: index
+    });
+  };
+
+  confirmDelete = async () => {
+    const { items, deleteIndex, isChecked } = this.state;
+    const idToDelete = items[deleteIndex].id;
     await deleteDoc(doc(db, 'todos', idToDelete));
 
-    const updatedItems = items.filter((_, i) => i !== index);
-    const updatedChecked = isChecked.filter((_, i) => i !== index);
+    const updatedItems = items.filter((_, i) => i !== deleteIndex);
+    const updatedChecked = isChecked.filter((_, i) => i !== deleteIndex);
 
-    this.setState({ items: updatedItems, isChecked: updatedChecked });
+    this.setState({ items: updatedItems, isChecked: updatedChecked, showConfirm: false, deleteIndex: null });
   };
+
+  cancelDelete = () => {
+    this.setState({
+      showConfirm: false,
+      deleteIndex: null
+    })
+  }
 
   editItem = (index) => {
     this.setState({
@@ -120,11 +136,23 @@ export default class TodoApp extends Component {
               {data.text}
               <div>
                 <i className="fas fa-edit" onClick={() => this.editItem(index)}></i>
-                <i className="fas fa-trash-alt" onClick={() => this.deleteItem(index)}></i>
+                <i className="fas fa-trash-alt" onClick={() => this.askDelete(index)}></i>
               </div>
             </li>
           ))}
         </ul>
+        {this.state.showConfirm && (
+          <div className="modal-backdrop">
+            <div className="modal">
+              <p>Are you sure you want to delete this item?</p>
+              <div className="modal-buttons">
+                <button className="btn btn-danger" onClick={this.confirmDelete}>Delete</button>
+                <button className="btn btn-cancel" onClick={this.cancelDelete}>Cancel</button>
+              </div>
+            </div>
+          </div>
+        )}
+
       </div>
     );
   }
